@@ -1,4 +1,31 @@
 // components/BenefitsSection.tsx
+type Benefit = {
+  title: string;
+  subtitle: string;
+  description: string;
+};
+
+const benefits: Benefit[] = [
+  {
+    title: "Economia",
+    subtitle: "Economize seu tempo precioso",
+    description:
+      "Elimine longas esperas e planeje melhor os seus compromissos. Com o Click&Go você economiza horas do seu dia.",
+  },
+  {
+    title: "Eficiência",
+    subtitle: "Agilidade no atendimento",
+    description:
+      "Reduza o tempo de espera e otimize o fluxo de clientes com uma solução digital prática e rápida.",
+  },
+  {
+    title: "Comodidade",
+    subtitle: "Atendimento onde você estiver",
+    description:
+      "Use o Click&Go do conforto de casa ou em movimento, sem precisar enfrentar filas.",
+  },
+];
+
 export default function BenefitsSection() {
   return (
     <section className="py-16 px-6 bg-white">
@@ -10,63 +37,30 @@ export default function BenefitsSection() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto border border-gray-300">
-        {/* Card esquerdo */}
-        <div className="p-8">
-          <p className="text-sm text-gray-700 mb-1">Economia</p>
-          <h3 className="text-2xl text-black font-bold mb-4">
-            Economize seu tempo precioso
-          </h3>
-          <p className="text-gray-700 mb-6">
-            Elimine longas esperas e planeje melhor os seus compromissos. Com o Click&Go você economiza horas do seu dia.
-          </p>
-          <div className="w-20 h-12 bg-gray-200">
-            <button>Saiba mais</button>
-          </div>
-        </div>
+      <div className="space-y-12 max-w-6xl mx-auto">
+        {benefits.map((benefit, index) => {
+          const isEven = index % 2 === 0;
 
-        {/* Área direita (imagem, vídeo ou gráfico) */}
-        <div className="bg-gray-200 h-full w-full min-h-[250px]" />
-      </div>
+          return (
+            <div
+              key={index}
+              className={`grid md:grid-cols-2 gap-8 items-center border border-gray-300 rounded-lg overflow-hidden`}
+            >
+              {/* Conteúdo */}
+              <div className={`p-8 ${isEven ? "" : "order-last"}`}>
+                <p className="text-sm text-gray-700 mb-1">{benefit.title}</p>
+                <h3 className="text-2xl text-black font-bold mb-4">{benefit.subtitle}</h3>
+                <p className="text-gray-700 mb-6">{benefit.description}</p>
+                <div className="w-24 h-12 bg-gray-200 flex items-center justify-center rounded">
+                  <button className="text-sm text-black">Saiba mais</button>
+                </div>
+              </div>
 
-
-      <div className="grid md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto border border-gray-300">
-        {/* Card esquerdo */}
-        <div className="p-8">
-          <p className="text-sm text-gray-700 mb-1">Economia</p>
-          <h3 className="text-2xl text-black font-bold mb-4">
-            Economize seu tempo precioso
-          </h3>
-          <p className="text-gray-700 mb-6">
-            Elimine longas esperas e planeje melhor os seus compromissos. Com o Click&Go você economiza horas do seu dia.
-          </p>
-          <div className="w-20 h-12 bg-gray-200">
-            <button>Saiba mais</button>
-          </div>
-        </div>
-
-        {/* Área direita (imagem, vídeo ou gráfico) */}
-        <div className="bg-gray-200 h-full w-full min-h-[250px]" />
-      </div>
-
-
-      <div className="grid md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto border border-gray-300">
-        {/* Card esquerdo */}
-        <div className="p-8">
-          <p className="text-sm text-gray-700 mb-1">Economia</p>
-          <h3 className="text-2xl text-black font-bold mb-4">
-            Economize seu tempo precioso
-          </h3>
-          <p className="text-gray-700 mb-6">
-            Elimine longas esperas e planeje melhor os seus compromissos. Com o Click&Go você economiza horas do seu dia.
-          </p>
-          <div className="w-20 h-12 bg-gray-200">
-            <button>Saiba mais</button>
-          </div>
-        </div>
-
-        {/* Área direita (imagem, vídeo ou gráfico) */}
-        <div className="bg-gray-200 h-full w-full min-h-[250px]" />
+              {/* Imagem ou área visual */}
+              <div className="bg-gray-200 h-full w-full min-h-[250px]" />
+            </div>
+          );
+        })}
       </div>
     </section>
   );
