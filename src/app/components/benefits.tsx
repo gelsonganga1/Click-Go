@@ -24,6 +24,12 @@ const benefits: Benefit[] = [
     description:
       "Use o Click&Go do conforto de casa ou em movimento, sem precisar enfrentar filas.",
   },
+  {
+    title: "Controle",
+    subtitle: "Gerencie suas filas facilmente",
+    description:
+      "Tenha controle total sobre suas reservas e horários, tudo na palma da sua mão.",
+  },
 ];
 
 export default function BenefitsSection() {
@@ -51,9 +57,12 @@ export default function BenefitsSection() {
                 <p className="text-sm text-gray-700 mb-1">{benefit.title}</p>
                 <h3 className="text-2xl text-black font-bold mb-4">{benefit.subtitle}</h3>
                 <p className="text-gray-700 mb-6">{benefit.description}</p>
-                <div className="w-24 h-12 bg-gray-200 flex items-center justify-center rounded">
-                  <button className="text-sm text-black">Saiba mais</button>
+                <div className="inline-block">
+                    <button className="text-sm text-black px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition">
+                       Saiba mais
+                    </button>
                 </div>
+
               </div>
 
               {/* Imagem ou área visual */}
