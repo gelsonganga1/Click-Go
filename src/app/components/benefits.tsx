@@ -5,7 +5,7 @@ export default function BenefitsSection() {
       <div className="text-center mb-12">
         <h2 className="text-sm text-black font-medium">Benefícios</h2>
         <h1 className="text-3xl font-bold mt-2">Por que usar o Click&Go</h1>
-        <p className="mt-2 text-black">
+        <p className="mt-2 text-gray-500">
           Transforme sua experiência de atendimento com nossa solução inovadora
         </p>
       </div>
