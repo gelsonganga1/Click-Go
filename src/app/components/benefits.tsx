@@ -14,13 +14,55 @@ export default function BenefitsSection() {
         {/* Card esquerdo */}
         <div className="p-8">
           <p className="text-sm text-gray-700 mb-1">Economia</p>
-          <h3 className="text-2xl font-bold mb-4">
+          <h3 className="text-2xl text-black font-bold mb-4">
             Economize seu tempo precioso
           </h3>
-          <p className="text-black mb-6">
+          <p className="text-gray-700 mb-6">
             Elimine longas esperas e planeje melhor os seus compromissos. Com o Click&Go você economiza horas do seu dia.
           </p>
-          <div className="w-24 h-12 bg-gray-200"></div>
+          <div className="w-20 h-12 bg-gray-200">
+            <button>Saiba mais</button>
+          </div>
+        </div>
+
+        {/* Área direita (imagem, vídeo ou gráfico) */}
+        <div className="bg-gray-200 h-full w-full min-h-[250px]" />
+      </div>
+
+
+      <div className="grid md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto border border-gray-300">
+        {/* Card esquerdo */}
+        <div className="p-8">
+          <p className="text-sm text-gray-700 mb-1">Economia</p>
+          <h3 className="text-2xl text-black font-bold mb-4">
+            Economize seu tempo precioso
+          </h3>
+          <p className="text-gray-700 mb-6">
+            Elimine longas esperas e planeje melhor os seus compromissos. Com o Click&Go você economiza horas do seu dia.
+          </p>
+          <div className="w-20 h-12 bg-gray-200">
+            <button>Saiba mais</button>
+          </div>
+        </div>
+
+        {/* Área direita (imagem, vídeo ou gráfico) */}
+        <div className="bg-gray-200 h-full w-full min-h-[250px]" />
+      </div>
+
+
+      <div className="grid md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto border border-gray-300">
+        {/* Card esquerdo */}
+        <div className="p-8">
+          <p className="text-sm text-gray-700 mb-1">Economia</p>
+          <h3 className="text-2xl text-black font-bold mb-4">
+            Economize seu tempo precioso
+          </h3>
+          <p className="text-gray-700 mb-6">
+            Elimine longas esperas e planeje melhor os seus compromissos. Com o Click&Go você economiza horas do seu dia.
+          </p>
+          <div className="w-20 h-12 bg-gray-200">
+            <button>Saiba mais</button>
+          </div>
         </div>
 
         {/* Área direita (imagem, vídeo ou gráfico) */}
