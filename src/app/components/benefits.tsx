@@ -3,9 +3,9 @@ export default function BenefitsSection() {
   return (
     <section className="py-16 px-6 bg-white">
       <div className="text-center mb-12">
-        <h2 className="text-sm text-gray-700 font-medium">Benefícios</h2>
+        <h2 className="text-sm text-black font-medium">Benefícios</h2>
         <h1 className="text-3xl font-bold mt-2">Por que usar o Click&Go</h1>
-        <p className="mt-2 text-gray-500">
+        <p className="mt-2 text-black">
           Transforme sua experiência de atendimento com nossa solução inovadora
         </p>
       </div>
@@ -17,7 +17,7 @@ export default function BenefitsSection() {
           <h3 className="text-2xl font-bold mb-4">
             Economize seu tempo precioso
           </h3>
-          <p className="text-gray-400 mb-6">
+          <p className="text-black mb-6">
             Elimine longas esperas e planeje melhor os seus compromissos. Com o Click&Go você economiza horas do seu dia.
           </p>
           <div className="w-24 h-12 bg-gray-200"></div>
