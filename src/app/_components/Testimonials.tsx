@@ -5,7 +5,7 @@ export default function Testimonials() {
     {
       name: "Maria Silva",
       role: "Usuária, Luanda",
-      text: "O Kudi mudou completamente minha forma de lidar com atendimentos. Nunca mais perdi tempo em filas!",
+      text: "O Click&Go mudou completamente minha forma de lidar com atendimentos. Nunca mais perdi tempo em filas!",
     },
     {
       name: "João Santos",

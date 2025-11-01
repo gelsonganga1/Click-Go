@@ -5,7 +5,7 @@ export default function CTA() {
         Transforme sua experiência de atendimento
       </h2>
       <p className="text-gray-400 mb-8">
-        Baixe agora o Kudi e comece a economizar tempo em seus serviços diários.
+        Baixe agora o Click&Go e comece a economizar tempo em seus serviços diários.
       </p>
       <div className="flex justify-center gap-4">
         <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium">

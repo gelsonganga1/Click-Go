@@ -8,9 +8,9 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(email, password);
+    await login(email, password);
   };
 
   return (
@@ -39,7 +39,7 @@ export default function LoginPage() {
         </button>
         <p className="text-sm text-center">
           Não tem conta?{" "}
-          <a href="/register" className="text-blue-600 underline">
+          <a href="/auth/register" className="text-blue-400 underline">
             Cadastre-se
           </a>
         </p>

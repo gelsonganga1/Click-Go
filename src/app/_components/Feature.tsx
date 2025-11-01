@@ -39,12 +39,12 @@ export default function Features() {
   const [selected, setSelected] = useState(features[0]); // Começa com a primeira funcionalidade selecionada
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white text-black">
       <div className="max-w-6xl mx-auto px-6">
         {/* Cabeçalho */}
         <div className="text-center mb-12">
           <h3 className="text-gray-600">Recursos</h3>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+          <h2 className="text-2xl md:text-3xl font-bold ">
             Funcionalidades do Click&Go
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto">

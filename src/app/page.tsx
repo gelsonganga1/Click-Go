@@ -5,14 +5,14 @@ import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { motion } from "framer-motion";
 
-import Navbar from "./components/Navbar";
-import Hero from "./components/hero";
-import Features from "./components/Feature";
-import HowItWorks from "./components/HowItWork";
-import BenefitsSection from "./components/benefits";
-import Testimonials from "./components/Testimonials";
-import Deploy from "./components/Deploy";
-import Footer from "./components/Footer";
+import Navbar from "./_components/Navbar";
+import Hero from "./_components/hero";
+import Features from "./_components/Feature";
+import HowItWorks from "./_components/HowItWork";
+import BenefitsSection from "./_components/benefits";
+import Testimonials from "./_components/Testimonials";
+import Deploy from "./_components/Deploy";
+import Footer from "./_components/Footer";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -23,14 +23,14 @@ export default function Home() {
   const router = useRouter();
   const { user, loading } = useAuth();
 
-  // Se não estiver logado, redireciona para o login
+  
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login");
+      router.push("/auth/login");
     }
   }, [user, loading, router]);
 
-  // Enquanto verifica o login, mostra carregando
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen text-gray-600">
@@ -39,7 +39,7 @@ export default function Home() {
     );
   }
 
-  // Se não tiver usuário logado, não renderiza a Home
+  
   if (!user) return null;
 
   return (

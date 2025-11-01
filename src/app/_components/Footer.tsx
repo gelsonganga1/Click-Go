@@ -5,7 +5,7 @@ export default function Footer() {
         <div>
           <h3 className="font-semibold text-white mb-3">Logo</h3>
           <p className="text-sm mb-3">
-            Fique por dentro das novidades e atualizações do Kudi
+            Fique por dentro das novidades e atualizações do Click&Go
           </p>
           <div className="flex">
             <input
