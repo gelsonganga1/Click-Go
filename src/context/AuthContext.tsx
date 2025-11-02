@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
@@ -7,6 +6,8 @@ type User = {
   id: number;
   full_name?: string;
   email: string;
+  tel?: string;
+  birth_date?: string;
   avatar_url?: string;
 } | null;
 
@@ -21,9 +22,8 @@ type AuthContextType = {
     password: string;
     tel: string;
     birthDate?: string;
-  }) => Promise<any>;
+  }) => Promise<void>;
 };
-
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -32,18 +32,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
 
   const login = async ({ email, password }: { email: string; password: string }) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
+
       if (!res.ok) throw new Error(data.error || "Erro no login");
 
-      if (data.tipo === "usuario") setUser(data.user);
-      else if (data.tipo === "instituicao") setUser(data.instituicao);
+      setUser(data.user);
     } catch (err) {
       console.error(err);
       throw err;
@@ -52,47 +52,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
- const register = async ({
-  fullName,
-  email,
-  password,
-  tel,
-  birthDate,
-}: {
-  fullName: string;
-  email: string;
-  password: string;
-  tel: string;
-  birthDate?: string;
-}) => {
-  setLoading(true);
-  try {
-    const res = await fetch("/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        full_name: fullName,
-        email,
-        password,
-        tel,
-        birth_date: birthDate || null,
-      }),
-    });
+  const register = async ({
+    fullName,
+    email,
+    password,
+    tel,
+    birthDate,
+  }: {
+    fullName: string;
+    email: string;
+    password: string;
+    tel: string;
+    birthDate?: string;
+  }) => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName,
+          email,
+          password,
+          tel,
+          birthDate,
+        }),
+      });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Erro ao criar conta");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao criar conta");
 
-    setUser(data.user); // opcional: logar após criar a conta
-    return data;
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-  const logout = () => {
-    setUser(null);
+      setUser(data.user); // opcional: logar automaticamente
+    } catch (err) {
+      console.error(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const logout = () => setUser(null);
 
   return (
     <AuthContext.Provider value={{ user, loading, login, logout, register }}>
