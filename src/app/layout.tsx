@@ -1,24 +1,10 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// src/app/layout.tsx
 import "./globals.css";
-import ClientLayout from "./ClientLayout"; // ✅ importa o layout com o AuthProvider
-import Navbar from "./_components/Navbar";
+import { Providers } from "./providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-export const metadata: Metadata = {
-  title: "Click - Sistema de Agendamentos",
-  description: "Plataforma moderna para agendar e gerir atendimentos.",
+export const metadata = {
+  title: "Click&Go",
+  description: "App de agendamento",
 };
 
 export default function RootLayout({
@@ -28,10 +14,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* ✅ AuthProvider está aqui via ClientLayout */}
-          <Navbar />
-        <ClientLayout>{children}</ClientLayout>
+      <body>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
