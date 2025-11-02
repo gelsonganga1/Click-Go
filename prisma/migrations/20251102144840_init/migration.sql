@@ -1,6 +1,6 @@
 -- CreateTable Users
 CREATE TABLE "Users" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" INTEGER PRIMARY KEY,
     "full_name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "tel" TEXT NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE "Users" (
 
 -- CreateTable Institution
 CREATE TABLE "Institution" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" INTEGER PRIMARY KEY,
     "nome_instituicao" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "tel" TEXT NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE "Institution" (
 
 -- CreateTable Reservation
 CREATE TABLE "Reservation" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" INTEGER PRIMARY KEY,
     "nome_completo" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "telefone" TEXT NOT NULL,

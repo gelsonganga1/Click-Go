@@ -1,62 +1,63 @@
 "use client";
 
-import { useAuth, getInitials } from "@/context/AuthContext";
+import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 
+// ✅ Função utilitária para pegar iniciais do nome ou email
+export function getInitials(nameOrEmail: string) {
+  if (!nameOrEmail) return "";
+  const nameParts = nameOrEmail.split(" ");
+  if (nameParts.length === 1) return nameParts[0][0].toUpperCase();
+  return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
+}
+
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const [menuAberto, setMenuAberto] = useState(false);
+
+  const avatar = user?.full_name || user?.email || "";
 
   return (
-    <header className="bg-white text-black shadow-sm">
-      <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-        {/*  Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold">Click&Go</h1>
-        </Link>
+    <nav className="flex items-center justify-between p-4 bg-gray-800 text-white">
+      <Link href="/" className="font-bold text-xl">
+        Click&Go
+      </Link>
 
-        {/* 🔹 Área do usuário */}
-        {user ? (
-          <div className="flex items-center gap-4">
-            {/* Avatar (imagem ou iniciais) */}
-            {user.avatar ? (
-              <Image
-                src={user.avatar}
-                alt="Avatar"
-                width={40}
-                height={40}
-                className="rounded-full object-cover border border-gray-700"
-              />
-            ) : (
-              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700 text-white font-semibold">
-                {getInitials(user.name || user.email)}
-              </div>
-            )}
+      <div className="relative">
+        <button
+          onClick={() => setMenuAberto(!menuAberto)}
+          className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center"
+        >
+          {user?.avatar_url ? (
+            <Image
+              src={user.avatar_url}
+              alt="Avatar"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+          ) : (
+            <span className="text-white font-bold">{getInitials(avatar)}</span>
+          )}
+        </button>
 
-            {/* Nome e e-mail */}
-            <div className="text-sm">
-              <p className="font-medium">{user.name || "Usuário"}</p>
-              <p className="text-gray-400">{user.email}</p>
-            </div>
-
-            {/* Botão de sair */}
+        {menuAberto && (
+          <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg py-2">
+            <p className="px-4 py-2 border-b">{user?.full_name || user?.email}</p>
             <button
-              onClick={logout}
-              className="px-3 py-1 text-sm rounded-md bg-gray-800 hover:bg-gray-700 transition"
+              onClick={() => {
+                logout();
+                setMenuAberto(false);
+              }}
+              className="w-full text-left px-4 py-2 hover:bg-gray-200"
             >
               Sair
             </button>
           </div>
-        ) : (
-          <Link
-            href="/auth/login"
-            className="px-4 py-2 rounded-md bg-gray-800 hover:bg-gray-700 transition"
-          >
-            Entrar
-          </Link>
         )}
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 }
-
