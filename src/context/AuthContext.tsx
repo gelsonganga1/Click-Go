@@ -65,9 +65,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   tel: string;
   birthDate?: string;
 }) => {
+  setLoading(true);
   try {
-    setLoading(true);
-
     const res = await fetch("/api/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -76,23 +75,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email,
         password,
         tel,
-        birth_date: birthDate || undefined,
+        birth_date: birthDate || null,
       }),
     });
 
     const data = await res.json();
-
     if (!res.ok) throw new Error(data.error || "Erro ao criar conta");
 
-    setUser(data.user); // se quiser logar automaticamente após criar a conta
+    setUser(data.user); // opcional: logar após criar a conta
     return data;
-  } catch (err) {
-    console.error(err);
-    throw err;
   } finally {
     setLoading(false);
   }
 };
+
 
   const logout = () => {
     setUser(null);

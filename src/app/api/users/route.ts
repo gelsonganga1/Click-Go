@@ -7,9 +7,13 @@ const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
   try {
-    const { full_name, email, password, tel, birth_date } = await req.json();
+    const body = await req.json();
+    console.log("Dados recebidos no backend:", body);
+
+    const { full_name, email, password, tel, birth_date } = body;
 
     if (!full_name || !email || !password || !tel) {
+      console.log("Erro: algum campo obrigatório está vazio");
       return NextResponse.json(
         { error: "Todos os campos obrigatórios" },
         { status: 400 }
@@ -17,6 +21,7 @@ export async function POST(req: Request) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("Senha hasheada:", hashedPassword);
 
     const user = await prisma.user.create({
       data: {
@@ -28,15 +33,10 @@ export async function POST(req: Request) {
       },
     });
 
+    console.log("Usuário criado:", user);
     return NextResponse.json({ message: "Conta criada com sucesso", user });
   } catch (err: any) {
-    if (err.code === "P2002") {
-      return NextResponse.json(
-        { error: "Email ou telefone já cadastrado" },
-        { status: 400 }
-      );
-    }
-    console.error(err);
+    console.error("Erro no backend:", err);
     return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
   }
 }
