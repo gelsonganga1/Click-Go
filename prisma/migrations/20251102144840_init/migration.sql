@@ -1,5 +1,5 @@
--- CreateTable
-CREATE TABLE "User" (
+-- CreateTable Users
+CREATE TABLE "Users" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "full_name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE "User" (
     "criado_em" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- CreateTable
+-- CreateTable Institution
 CREATE TABLE "Institution" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "nome_instituicao" TEXT NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE "Institution" (
     "criado_em" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- CreateTable
+-- CreateTable Reservation
 CREATE TABLE "Reservation" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "nome_completo" TEXT NOT NULL,
@@ -37,14 +37,10 @@ CREATE TABLE "Reservation" (
     "criado_em" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+-- CreateIndex Users
+CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
+CREATE UNIQUE INDEX "Users_tel_key" ON "Users"("tel");
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_tel_key" ON "User"("tel");
-
--- CreateIndex
+-- CreateIndex Institution
 CREATE UNIQUE INDEX "Institution_email_key" ON "Institution"("email");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Institution_tel_key" ON "Institution"("tel");
