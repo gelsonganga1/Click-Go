@@ -5,14 +5,14 @@ const prisma = new PrismaClient();
 
 /**
  * PATCH /api/reservations/[id]
- * Atualiza o status de uma reserva específica
+ * Atualiza o status de uma reserva
  */
 export async function PATCH(
   req: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
     const { status } = await req.json();
 
     if (!status) {
@@ -27,7 +27,7 @@ export async function PATCH(
       data: { status },
     });
 
-    return NextResponse.json(updated, { status: 200 });
+    return NextResponse.json(updated);
   } catch (error: any) {
     console.error("Erro ao atualizar reserva:", error);
 
@@ -47,14 +47,14 @@ export async function PATCH(
 
 /**
  * GET /api/reservations/[id]
- * Retorna detalhes de uma reserva específica
+ * Retorna uma reserva específica
  */
 export async function GET(
   req: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
 
     const reserva = await prisma.reservation.findUnique({
       where: { id },
@@ -67,7 +67,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(reserva, { status: 200 });
+    return NextResponse.json(reserva);
   } catch (error) {
     console.error("Erro ao buscar reserva:", error);
     return NextResponse.json(
@@ -83,10 +83,10 @@ export async function GET(
  */
 export async function DELETE(
   req: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
 
     await prisma.reservation.delete({
       where: { id },
@@ -112,6 +112,7 @@ export async function DELETE(
     );
   }
 }
+
 
 
 
