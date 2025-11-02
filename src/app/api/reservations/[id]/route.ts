@@ -31,7 +31,6 @@ export async function PATCH(
   } catch (error: any) {
     console.error("Erro ao atualizar reserva:", error);
 
-    // Se o registro não existir
     if (error.code === "P2025") {
       return NextResponse.json(
         { error: "Reserva não encontrada" },
@@ -73,6 +72,46 @@ export async function GET(
     console.error("Erro ao buscar reserva:", error);
     return NextResponse.json(
       { error: "Erro ao buscar reserva" },
-      { status: 500
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * DELETE /api/reservations/[id]
+ * Exclui uma reserva
+ */
+export async function DELETE(
+  req: Request,
+  context: { params: { id: string } }
+) {
+  try {
+    const { id } = context.params;
+
+    await prisma.reservation.delete({
+      where: { id },
+    });
+
+    return NextResponse.json(
+      { message: "Reserva excluída com sucesso" },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Erro ao excluir reserva:", error);
+
+    if (error.code === "P2025") {
+      return NextResponse.json(
+        { error: "Reserva não encontrada" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Erro ao excluir reserva" },
+      { status: 500 }
+    );
+  }
+}
+
 
 
