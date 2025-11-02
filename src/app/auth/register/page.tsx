@@ -16,20 +16,17 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  try {
+    await register({ full_name: fullName, email, password });
+    alert("Conta criada com sucesso!");
+    router.push("/auth/login");
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao criar conta");
+  }
+};
 
-    try {
-      await register(fullName, email, password);
-      alert("Conta criada com sucesso!");
-      router.push("/auth/login");
-    } catch (error) {
-      console.error("Erro ao registrar:", error);
-      alert("Erro ao criar conta. Tente novamente.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
