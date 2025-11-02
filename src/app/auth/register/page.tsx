@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 export default function RegisterPage() {
-  const { register } = useAuth();
+  const { register, loading } = useAuth(); // ✅ usar loading do contexto
   const router = useRouter();
 
   const [fullName, setFullName] = useState("");
@@ -13,20 +13,19 @@ export default function RegisterPage() {
   const [tel, setTel] = useState("");
   const [password, setPassword] = useState("");
   const [birthDate, setBirthDate] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  try {
-    await register({ full_name: fullName, email, password });
-    alert("Conta criada com sucesso!");
-    router.push("/auth/login");
-  } catch (error) {
-    console.error(error);
-    alert("Erro ao criar conta");
-  }
-};
-
+    e.preventDefault();
+    try {
+      // ✅ usar nome correto do parâmetro
+      await register({ fullName, email, password });
+      alert("Conta criada com sucesso!");
+      router.push("/auth/login");
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao criar conta");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
