@@ -14,18 +14,24 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [birthDate, setBirthDate] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      // ✅ usar nome correto do parâmetro
-      await register({ fullName, email, password });
-      alert("Conta criada com sucesso!");
-      router.push("/auth/login");
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao criar conta");
-    }
-  };
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  try {
+    await register({
+      fullName,
+      email,
+      password,
+      tel,
+      birthDate, // opcional, mas podemos enviar se estiver preenchido
+    });
+    alert("Conta criada com sucesso!");
+    router.push("/auth/login");
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao criar conta");
+  }
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">

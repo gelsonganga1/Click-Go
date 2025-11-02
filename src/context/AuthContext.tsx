@@ -15,8 +15,15 @@ type AuthContextType = {
   loading: boolean;
   login: (credentials: { email: string; password: string }) => Promise<void>;
   logout: () => void;
-  register: (data: { fullName: string; email: string; password: string }) => Promise<void>;
+  register: (data: {
+    fullName: string;
+    email: string;
+    password: string;
+    tel: string;
+    birthDate?: string;
+  }) => Promise<any>;
 };
+
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -45,25 +52,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const register = async ({ fullName, email, password }: { fullName: string; email: string; password: string }) => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ full_name: fullName, email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao criar conta");
+ const register = async ({
+  fullName,
+  email,
+  password,
+  tel,
+  birthDate,
+}: {
+  fullName: string;
+  email: string;
+  password: string;
+  tel: string;
+  birthDate?: string;
+}) => {
+  try {
+    setLoading(true);
 
-      setUser(data.user);
-    } catch (err) {
-      console.error(err);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        full_name: fullName,
+        email,
+        password,
+        tel,
+        birth_date: birthDate || undefined,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || "Erro ao criar conta");
+
+    setUser(data.user); // se quiser logar automaticamente após criar a conta
+    return data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  } finally {
+    setLoading(false);
+  }
+};
 
   const logout = () => {
     setUser(null);
