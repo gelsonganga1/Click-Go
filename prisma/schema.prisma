@@ -1,43 +1,55 @@
+// Definição da fonte de dados (SQLite)
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
+// Gerador do cliente Prisma
 generator client {
   provider = "prisma-client-js"
 }
 
+// -------------------------------
+// Tabela de Usuários
+// -------------------------------
 model User {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   full_name   String
-  email       String   @unique
-  tel         String   @unique
+  email       String    @unique
+  tel         String    @unique
   password    String
   birth_date  DateTime?
   avatar_url  String?
+  criado_em   DateTime  @default(now()) // Adicionado para rastrear data de criação
 }
 
+// -------------------------------
+// Tabela de Instituições
+// -------------------------------
 model Institution {
-  id              Int      @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
   nome_instituicao String
-  email           String   @unique
-  tel             String   @unique
-  password        String
-  servicos        String?
-  avatar_url      String?
-  criado_em       DateTime @default(now())
+  email            String    @unique
+  tel              String    @unique
+  password         String
+  servicos         String?
+  avatar_url       String?
+  criado_em        DateTime  @default(now())
 }
 
+// -------------------------------
+// Tabela de Reservas
+// -------------------------------
 model Reservation {
-  id              Int      @id @default(autoincrement())
-  nome_completo   String
-  email           String
-  telefone        String
-  documento       String?
-  tipo_servico    String
-  data_agendamento DateTime
-  horario         String
-  observacoes     String?
-  status          String   @default("pendente")
-  criado_em       DateTime @default(now())
+  id                Int       @id @default(autoincrement())
+  nome_completo     String
+  email             String
+  telefone          String
+  documento         String?
+  tipo_servico      String
+  data_agendamento  DateTime
+  horario           String
+  observacoes       String?
+  status            String    @default("pendente")
+  criado_em         DateTime  @default(now())
 }
