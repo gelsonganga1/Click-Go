@@ -9,9 +9,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await login(email, password);
-  };
+  e.preventDefault();
+  await login({ email, password });
+};
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
