@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ClientLayout from "./ClientLayout"; // importa o layout cliente
+import ClientLayout from "./ClientLayout"; // ✅ importa o layout com o AuthProvider
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +28,9 @@ export default function RootLayout({
   return (
     <html lang="pt">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* ✅ AuthProvider está aqui via ClientLayout */}
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
 }
-
-
-
-
