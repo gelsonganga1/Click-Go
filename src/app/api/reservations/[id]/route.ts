@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 /**
  * PATCH /api/reservations/[id]
- * Atualiza o status de uma reserva
  */
 export async function PATCH(
   req: Request,
@@ -23,7 +22,7 @@ export async function PATCH(
     }
 
     const updated = await prisma.reservation.update({
-      where: { id },
+      where: { id: Number(id) }, // ✅ conversão de string → número
       data: { status },
     });
 
@@ -47,7 +46,6 @@ export async function PATCH(
 
 /**
  * GET /api/reservations/[id]
- * Retorna uma reserva específica
  */
 export async function GET(
   req: Request,
@@ -57,7 +55,7 @@ export async function GET(
     const { id } = await params;
 
     const reserva = await prisma.reservation.findUnique({
-      where: { id },
+      where: { id: Number(id) }, // ✅ conversão aqui também
     });
 
     if (!reserva) {
@@ -79,7 +77,6 @@ export async function GET(
 
 /**
  * DELETE /api/reservations/[id]
- * Exclui uma reserva
  */
 export async function DELETE(
   req: Request,
@@ -89,7 +86,7 @@ export async function DELETE(
     const { id } = await params;
 
     await prisma.reservation.delete({
-      where: { id },
+      where: { id: Number(id) }, // ✅ e aqui também
     });
 
     return NextResponse.json(
@@ -112,6 +109,7 @@ export async function DELETE(
     );
   }
 }
+
 
 
 
