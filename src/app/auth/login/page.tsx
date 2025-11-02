@@ -47,3 +47,6 @@ export default function LoginPage() {
     </div>
   );
 }
+
+// 👇 Isto impede o Next.js de tentar pré-renderizar no servidor
+export const dynamic = "force-dynamic";
