@@ -1,39 +1,35 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import crypto from "crypto";
 
 const prisma = new PrismaClient();
 
-export async function GET() {
-  const users = await prisma.user.findMany();
-  return NextResponse.json({ users });
-}
-
 export async function POST(req: Request) {
-  const data = await req.json();
-  const { full_name, email, tel, password, birth_date } = data;
+  try {
+    const { full_name, email, password, tel, birth_date } = await req.json();
 
-  if (!full_name || !email || !tel || !password)
-    return NextResponse.json({ error: "Campos obrigatórios em falta" }, { status: 400 });
+    if (!full_name || !email || !password || !tel)
+      return NextResponse.json({ error: "Todos os campos obrigatórios" }, { status: 400 });
 
-  const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing)
-    return NextResponse.json({ error: "Email já registado" }, { status: 400 });
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const hash = crypto.createHash("md5").update(email.trim().toLowerCase()).digest("hex");
-  const avatar_url = `https://www.gravatar.com/avatar/${hash}?d=identicon`;
+    const user = await prisma.user.create({
+      data: {
+        full_name,
+        email,
+        password: hashedPassword,
+        tel,
+        birth_date: birth_date ? new Date(birth_date) : undefined,
+      },
+    });
 
-  const newUser = await prisma.user.create({
-    data: {
-      full_name,
-      email,
-      tel,
-      password: await bcrypt.hash(password, 10),
-      birth_date: birth_date ? new Date(birth_date) : null,
-      avatar_url,
-    },
-  });
-
-  return NextResponse.json({ message: "Conta criada com sucesso", user: newUser }, { status: 201 });
+    return NextResponse.json({ message: "Conta criada com sucesso", user });
+  } catch (err: any) {
+    if (err.code === "P2002") {
+      // erro de unique constraint
+      return NextResponse.json({ error: "Email ou telefone já cadastrado" }, { status: 400 });
+    }
+    console.error(err);
+    return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
+  }
 }

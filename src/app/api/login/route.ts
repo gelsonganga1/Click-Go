@@ -11,34 +11,18 @@ export async function POST(req: Request) {
     if (!email || !password)
       return NextResponse.json({ error: "Email e senha são obrigatórios" }, { status: 400 });
 
-    // Buscar usuário normal
     const user = await prisma.user.findUnique({ where: { email } });
+    if (!user)
+      return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
 
-    if (user && user.password && (await bcrypt.compare(password, user.password))) {
-      return NextResponse.json({
-        message: "Login bem-sucedido",
-        tipo: "usuario",
-        user,
-      });
-    }
+    const senhaValida = await bcrypt.compare(password, user.password);
+    if (!senhaValida)
+      return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
 
-    // Buscar instituição
-    const inst = await prisma.institution.findUnique({ where: { email } });
-
-    if (inst && inst.password && (await bcrypt.compare(password, inst.password))) {
-      return NextResponse.json({
-        message: "Login bem-sucedido",
-        tipo: "instituicao",
-        instituicao: inst,
-      });
-    }
-
-    return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
-  } catch (err: any) {
-    console.error("💥 Erro detalhado:", err);
-    return NextResponse.json(
-      { error: "Erro interno do servidor", detalhe: err.message },
-      { status: 500 }
-    );
+    // Aqui você pode criar um JWT ou sessão se quiser
+    return NextResponse.json({ message: "Login bem-sucedido", user });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
   }
 }

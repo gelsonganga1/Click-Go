@@ -1,160 +1,51 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
-import { useRouter } from "next/navigation";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
-// 🔹 Tipo de usuário
 type User = {
-  id: string;
-  name?: string;
+  id: number;
+  full_name: string;
   email: string;
-  tipo: "usuario" | "instituicao";
-  avatar?: string | null;
-} | null;
+  tel: string;
+};
 
-// 🔹 Tipo do contexto
 type AuthContextType = {
-  user: User;
-  loading: boolean;
+  user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => void;
-  logout: () => void;
-  setUser: React.Dispatch<React.SetStateAction<User>>;
+  register: (full_name: string, email: string, password: string, tel: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User>(null);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
 
-  // 🔹 Carrega usuário salvo no localStorage (mantém login entre recarregamentos)
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
-    setLoading(false);
-  }, []);
-
-  // 🔸 Login REAL — chama a rota /api/login
   const login = async (email: string, password: string) => {
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.error || "Erro ao autenticar");
-        return;
-      }
-
-      let loggedUser: User;
-
-      if (data.tipo === "usuario") {
-        loggedUser = {
-          id: data.user.id,
-          email: data.user.email,
-          tipo: "usuario",
-          name: data.user.name || "Usuário",
-        };
-        router.push("/dashboard");
-      } else {
-        loggedUser = {
-          id: data.instituicao.id,
-          email: data.instituicao.email,
-          tipo: "instituicao",
-          name: data.instituicao.name || "Instituição",
-        };
-        router.push("/instituicao");
-      }
-
-      setUser(loggedUser);
-      localStorage.setItem("user", JSON.stringify(loggedUser));
-    } catch (err) {
-      console.error("Erro no login:", err);
-      alert("Erro ao conectar ao servidor");
-    }
-  };
-
-const register = async (name: string, email: string, password: string) => {
-  try {
-    const res = await fetch("/api/users", {
+    const res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        full_name: name,
-        email,
-        password,
-        tel: "+244000000000", // ou pegue do formulário
-      }),
+      body: JSON.stringify({ email, password }),
     });
-
     const data = await res.json();
-
-    if (!res.ok) {
-      alert(data.error || "Erro ao criar conta");
-      return;
-    }
-
-    // salva no contexto e localStorage
-    const newUser = {
-      id: data.user.id,
-      email: data.user.email,
-      name: data.user.full_name,
-      tipo: "usuario" as const,
-    };
-
-    setUser(newUser);
-    localStorage.setItem("user", JSON.stringify(newUser));
-    alert("Conta criada com sucesso!");
-    router.push("/dashboard");
-  } catch (err) {
-    console.error("Erro ao registrar:", err);
-    alert("Erro de conexão com o servidor.");
-  }
-};
-
-
-  // 🔸 Logout
-  const logout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-    router.push("/auth/login");
+    if (!res.ok) throw new Error(data.error || "Erro ao logar");
+    setUser(data.user);
   };
 
-  return (
-    <AuthContext.Provider
-      value={{ user, loading, login, register, logout, setUser }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-}
+  const register = async (full_name: string, email: string, password: string, tel: string) => {
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ full_name, email, password, tel }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao registrar");
+  };
 
-// 🔹 Hook para usar o contexto
-export function useAuth() {
+  return <AuthContext.Provider value={{ user, login, register }}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context)
-    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
+  if (!context) throw new Error("useAuth deve ser usado dentro de AuthProvider");
   return context;
-}
-
-// 🧩 Gera iniciais a partir do nome ou e-mail (para o avatar)
-export function getInitials(nameOrEmail: string | undefined): string {
-  if (!nameOrEmail) return "?";
-  const parts = nameOrEmail.split(" ");
-  if (parts.length > 1) return (parts[0][0] + parts[1][0]).toUpperCase();
-  if (nameOrEmail.includes("@"))
-    return nameOrEmail.slice(0, 2).toUpperCase();
-  return nameOrEmail.slice(0, 2).toUpperCase();
-}
+};
