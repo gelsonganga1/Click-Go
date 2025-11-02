@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-// 🔹 Configuração das fontes Google com variáveis CSS
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap", // melhora performance e evita flashes de texto
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -15,13 +14,11 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-// 🔹 Metadados globais
 export const metadata: Metadata = {
   title: "Click - Sistema de Agendamentos",
   description: "Plataforma moderna para agendar e gerir atendimentos.",
 };
 
-// 🔹 Layout raiz da aplicação
 export default function RootLayout({
   children,
 }: {
@@ -35,4 +32,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 
