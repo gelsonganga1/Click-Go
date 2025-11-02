@@ -41,7 +41,9 @@ export default function RegisterPage() {
         <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Nome completo */}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Nome completo</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Nome completo
+            </label>
             <input
               type="text"
               placeholder="Seu nome completo"
@@ -54,7 +56,9 @@ export default function RegisterPage() {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Email
+            </label>
             <input
               type="email"
               placeholder="exemplo@email.com"
@@ -67,7 +71,9 @@ export default function RegisterPage() {
 
           {/* Telefone */}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Telefone</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Telefone
+            </label>
             <input
               type="tel"
               placeholder="+244 XXX XXX XXX"
@@ -80,7 +86,9 @@ export default function RegisterPage() {
 
           {/* Data de nascimento */}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Data de nascimento</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Data de nascimento
+            </label>
             <input
               type="date"
               value={birthDate}
@@ -91,7 +99,9 @@ export default function RegisterPage() {
 
           {/* Senha */}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Senha</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Senha
+            </label>
             <input
               type="password"
               placeholder="Crie uma senha forte"
@@ -118,7 +128,10 @@ export default function RegisterPage() {
 
         <p className="text-center text-sm text-gray-600 mt-4">
           Já tem uma conta?{" "}
-          <a href="/auth/login" className="text-sky-600 font-medium hover:underline">
+          <a
+            href="/auth/login"
+            className="text-sky-600 font-medium hover:underline"
+          >
             Entre aqui
           </a>
         </p>
@@ -126,3 +139,5 @@ export default function RegisterPage() {
     </div>
   );
 }
+
+export const dynamic = "force-dynamic";
