@@ -23,49 +23,16 @@ import { Calendar, Clock, CheckCircle2, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const horariosDisponiveis = [
-  "08:00",
-  "08:30",
-  "09:00",
-  "09:30",
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "13:00",
-  "13:30",
-  "14:00",
-  "14:30",
-  "15:00",
-  "15:30",
-  "16:00",
-  "16:30",
-  "17:00",
+  "08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30",
+  "13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00"
 ];
 
 const servicosInfo = {
-  bancario: {
-    label: "Atendimento Bancário",
-    icon: "🏦",
-    cor: "from-blue-500 to-blue-600",
-  },
-  ministerio: { label: "Ministério", icon: "🏛️", cor: "from-purple-500 to-purple-600" },
-  consulado: { label: "Consulado", icon: "🌍", cor: "from-green-500 to-green-600" },
-  cartorio: { label: "Cartório", icon: "📋", cor: "from-orange-500 to-orange-600" },
-  outros: { label: "Outros Serviços", icon: "📌", cor: "from-slate-500 to-slate-600" },
-};
-
-// 🔹 Simulação da API base44
-const base44 = {
-  entities: {
-    Agendamento: {
-      create: async (data: any) => {
-        // Simula tempo de rede
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        console.log("✅ Agendamento criado (simulado):", data);
-        return { id: Date.now(), ...data };
-      },
-    },
-  },
+  bancario: { label: "Atendimento Bancário", icon: "🏦" },
+  ministerio: { label: "Ministério", icon: "🏛️" },
+  consulado: { label: "Consulado", icon: "🌍" },
+  cartorio: { label: "Cartório", icon: "📋" },
+  outros: { label: "Outros Serviços", icon: "📌" },
 };
 
 export default function Agendar() {
@@ -86,12 +53,9 @@ export default function Agendar() {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      await base44.entities.Agendamento.create({
-        ...formData,
-        status: "pendente",
-      });
-
+    // Simula o processo de reserva localmente
+    setTimeout(() => {
+      setLoading(false);
       setSucesso(true);
       setFormData({
         nome_completo: "",
@@ -105,11 +69,7 @@ export default function Agendar() {
       });
 
       setTimeout(() => setSucesso(false), 5000);
-    } catch (error) {
-      console.error("Erro ao criar agendamento:", error);
-    } finally {
-      setLoading(false);
-    }
+    }, 1500);
   };
 
   const handleChange = (field: string, value: string) => {
@@ -119,191 +79,79 @@ export default function Agendar() {
   return (
     <div className="min-h-screen py-8">
       <div className="max-w-3xl mx-auto">
-        {/* Cabeçalho */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
-        >
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">
-            Agende seu Atendimento
-          </h1>
-          <p className="text-slate-600 text-lg">
-            Escolha o melhor horário para ser atendido
-          </p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
+          <h1 className="text-4xl font-bold text-slate-900 mb-3">Agende seu Atendimento</h1>
+          <p className="text-slate-600 text-lg">Escolha o melhor horário para ser atendido</p>
         </motion.div>
 
-        {/* Animações entre sucesso e formulário */}
         <AnimatePresence mode="wait">
           {sucesso ? (
-            <motion.div
-              key="sucesso"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="text-center py-16"
-            >
+            <motion.div key="sucesso" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="text-center py-16">
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 className="w-10 h-10 text-green-600" />
               </div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-3">
-                Agendamento Realizado!
-              </h2>
-              <p className="text-slate-600 text-lg mb-6">
-                Você receberá uma confirmação por email em breve.
-              </p>
-              <Button
-                onClick={() => setSucesso(false)}
-                className="bg-blue-900 hover:bg-blue-800"
-              >
-                Fazer Novo Agendamento
-              </Button>
+              <h2 className="text-3xl font-bold text-slate-900 mb-3">Agendamento Realizado!</h2>
+              <p className="text-slate-600 text-lg mb-6">Seu agendamento foi registrado com sucesso.</p>
+              <Button onClick={() => setSucesso(false)} className="bg-blue-900 hover:bg-blue-800">Fazer Novo Agendamento</Button>
             </motion.div>
           ) : (
-            <motion.div
-              key="formulario"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
+            <motion.div key="formulario" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <Card className="border-none shadow-2xl">
                 <CardHeader className="border-b bg-gradient-to-r from-slate-50 to-blue-50/50 pb-6">
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <Calendar className="w-6 h-6 text-blue-900" />
-                    Dados do Agendamento
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    Preencha seus dados e escolha data e horário
-                  </CardDescription>
+                  <CardTitle className="text-2xl flex items-center gap-2"><Calendar className="w-6 h-6 text-blue-900" /> Dados do Agendamento</CardTitle>
+                  <CardDescription className="text-base">Preencha seus dados e escolha data e horário</CardDescription>
                 </CardHeader>
-
                 <CardContent className="pt-8">
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Informações pessoais */}
+                    {/* Informações Pessoais */}
                     <div className="space-y-4">
-                      <h3 className="font-semibold text-slate-900 text-lg flex items-center gap-2">
-                        👤 Informações Pessoais
-                      </h3>
-
+                      <h3 className="font-semibold text-slate-900 text-lg flex items-center gap-2">👤 Informações Pessoais</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="nome">Nome Completo *</Label>
-                          <Input
-                            id="nome"
-                            value={formData.nome_completo}
-                            onChange={(e) =>
-                              handleChange("nome_completo", e.target.value)
-                            }
-                            placeholder="Seu nome completo"
-                            required
-                            className="h-11"
-                          />
+                          <Input id="nome" value={formData.nome_completo} onChange={(e) => handleChange("nome_completo", e.target.value)} placeholder="Seu nome completo" required className="h-11" />
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="documento">CPF/RG/Passaporte</Label>
-                          <Input
-                            id="documento"
-                            value={formData.documento}
-                            onChange={(e) =>
-                              handleChange("documento", e.target.value)
-                            }
-                            placeholder="Número do documento"
-                            className="h-11"
-                          />
+                          <Input id="documento" value={formData.documento} onChange={(e) => handleChange("documento", e.target.value)} placeholder="Número do documento" className="h-11" />
                         </div>
                       </div>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="email">Email *</Label>
-                          <Input
-                            id="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={(e) =>
-                              handleChange("email", e.target.value)
-                            }
-                            placeholder="seu@email.com"
-                            required
-                            className="h-11"
-                          />
+                          <Input id="email" type="email" value={formData.email} onChange={(e) => handleChange("email", e.target.value)} placeholder="seu@email.com" required className="h-11" />
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="telefone">Telefone *</Label>
-                          <Input
-                            id="telefone"
-                            value={formData.telefone}
-                            onChange={(e) =>
-                              handleChange("telefone", e.target.value)
-                            }
-                            placeholder="(00) 00000-0000"
-                            required
-                            className="h-11"
-                          />
+                          <Input id="telefone" value={formData.telefone} onChange={(e) => handleChange("telefone", e.target.value)} placeholder="(00) 00000-0000" required className="h-11" />
                         </div>
                       </div>
                     </div>
 
                     {/* Tipo de serviço */}
                     <div className="space-y-4">
-                      <h3 className="font-semibold text-slate-900 text-lg flex items-center gap-2">
-                        🎯 Tipo de Atendimento
-                      </h3>
-
+                      <h3 className="font-semibold text-slate-900 text-lg flex items-center gap-2">🎯 Tipo de Atendimento</h3>
                       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                         {Object.entries(servicosInfo).map(([key, info]) => (
-                          <button
-                            key={key}
-                            type="button"
-                            onClick={() => handleChange("tipo_servico", key)}
-                            className={`p-4 rounded-xl border-2 transition-all hover:scale-105 ${
-                              formData.tipo_servico === key
-                                ? "border-blue-900 bg-blue-50 shadow-lg"
-                                : "border-slate-200 hover:border-slate-300"
-                            }`}
-                          >
+                          <button key={key} type="button" onClick={() => handleChange("tipo_servico", key)} className={`p-4 rounded-xl border-2 transition-all hover:scale-105 ${formData.tipo_servico === key ? "border-blue-900 bg-blue-50 shadow-lg" : "border-slate-200 hover:border-slate-300"}`}>
                             <div className="text-3xl mb-2">{info.icon}</div>
-                            <div className="text-xs font-medium text-slate-700">
-                              {info.label}
-                            </div>
+                            <div className="text-xs font-medium text-slate-700">{info.label}</div>
                           </button>
                         ))}
                       </div>
                     </div>
 
-                    {/* Data e horário */}
+                    {/* Data e Horário */}
                     <div className="space-y-4">
-                      <h3 className="font-semibold text-slate-900 text-lg flex items-center gap-2">
-                        📅 Data e Horário
-                      </h3>
-
+                      <h3 className="font-semibold text-slate-900 text-lg flex items-center gap-2">📅 Data e Horário</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="data">Data *</Label>
-                          <Input
-                            id="data"
-                            type="date"
-                            value={formData.data_agendamento}
-                            onChange={(e) =>
-                              handleChange("data_agendamento", e.target.value)
-                            }
-                            min={new Date().toISOString().split("T")[0]}
-                            required
-                            className="h-11"
-                          />
+                          <Input id="data" type="date" value={formData.data_agendamento} onChange={(e) => handleChange("data_agendamento", e.target.value)} min={new Date().toISOString().split("T")[0]} required className="h-11" />
                         </div>
-
                         <div className="space-y-2">
                           <Label htmlFor="horario">Horário *</Label>
-                          <Select
-                            value={formData.horario}
-                            onValueChange={(value) =>
-                              handleChange("horario", value)
-                            }
-                            required
-                          >
+                          <Select value={formData.horario} onValueChange={(value) => handleChange("horario", value)} required>
                             <SelectTrigger className="h-11">
                               <SelectValue placeholder="Selecione o horário" />
                             </SelectTrigger>
@@ -325,24 +173,11 @@ export default function Agendar() {
                     {/* Observações */}
                     <div className="space-y-2">
                       <Label htmlFor="obs">Observações</Label>
-                      <Textarea
-                        id="obs"
-                        value={formData.observacoes}
-                        onChange={(e) =>
-                          handleChange("observacoes", e.target.value)
-                        }
-                        placeholder="Informações adicionais sobre seu agendamento..."
-                        rows={4}
-                        className="resize-none"
-                      />
+                      <Textarea id="obs" value={formData.observacoes} onChange={(e) => handleChange("observacoes", e.target.value)} placeholder="Informações adicionais..." rows={4} className="resize-none" />
                     </div>
 
                     {/* Botão */}
-                    <Button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full h-12 bg-blue-900 hover:bg-blue-800 text-lg font-semibold shadow-lg"
-                    >
+                    <Button type="submit" disabled={loading} className="w-full h-12 bg-blue-900 hover:bg-blue-800 text-lg font-semibold shadow-lg">
                       {loading ? (
                         <>
                           <Loader2 className="w-5 h-5 mr-2 animate-spin" />
@@ -365,3 +200,4 @@ export default function Agendar() {
     </div>
   );
 }
+

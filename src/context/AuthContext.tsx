@@ -7,7 +7,6 @@ type User = {
   full_name?: string;
   email: string;
   tel?: string;
-  birth_date?: string;
   avatar_url?: string;
 } | null;
 
@@ -32,21 +31,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
 
   const login = async ({ email, password }: { email: string; password: string }) => {
-    setLoading(true);
     try {
+      setLoading(true);
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao logar");
 
-      if (!res.ok) throw new Error(data.error || "Erro no login");
-
-      setUser(data.user);
-    } catch (err) {
-      console.error(err);
-      throw err;
+      setUser(data.user); // salva usuário no contexto
     } finally {
       setLoading(false);
     }
@@ -65,33 +60,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     tel: string;
     birthDate?: string;
   }) => {
-    setLoading(true);
     try {
+      setLoading(true);
       const res = await fetch("/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fullName,
+          full_name: fullName,
           email,
           password,
           tel,
-          birthDate,
+          birth_date: birthDate || undefined,
         }),
       });
-
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Erro ao criar conta");
 
-      setUser(data.user); // opcional: logar automaticamente
-    } catch (err) {
-      console.error(err);
-      throw err;
+      setUser(data.user); // opcional: loga automaticamente após criar conta
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => setUser(null);
+  const logout = () => {
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider value={{ user, loading, login, logout, register }}>
@@ -105,3 +98,4 @@ export const useAuth = () => {
   if (!context) throw new Error("useAuth deve ser usado dentro de um AuthProvider");
   return context;
 };
+

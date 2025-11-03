@@ -23,32 +23,18 @@ export default function Home() {
   const router = useRouter();
   const { user, loading } = useAuth();
 
-  
   useEffect(() => {
+    // se não estiver logado, redireciona para login
     if (!loading && !user) {
       router.push("/auth/login");
     }
   }, [user, loading, router]);
 
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen text-gray-600">
-        Carregando...
-      </div>
-    );
-  }
-
-  
-  if (!user) return null;
+  if (loading) return <div className="flex items-center justify-center h-screen text-gray-600">Carregando...</div>;
+  if (!user) return null; // evita renderizar antes do user estar carregado
 
   return (
-    <motion.main
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className="overflow-hidden"
-    >
+    <motion.main initial="initial" animate="animate" exit="exit" className="overflow-hidden">
       <motion.div variants={fadeInUp}>
         <Navbar />
       </motion.div>
@@ -68,15 +54,19 @@ export default function Home() {
       <motion.div variants={fadeInUp}>
         <BenefitsSection />
       </motion.div>
+
       <motion.div variants={fadeInUp}>
         <Testimonials />
       </motion.div>
+
       <motion.div variants={fadeInUp}>
         <Deploy />
       </motion.div>
+
       <motion.div variants={fadeInUp}>
         <Footer />
       </motion.div>
     </motion.main>
   );
 }
+

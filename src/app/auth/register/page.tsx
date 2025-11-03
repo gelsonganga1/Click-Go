@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 export default function RegisterPage() {
-  const { register, loading } = useAuth(); // ✅ usar loading do contexto
   const router = useRouter();
+  const { register } = useAuth();
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,24 +14,15 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [birthDate, setBirthDate] = useState("");
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  try {
-    await register({
-      fullName,
-      email,
-      password,
-      tel,
-      birthDate, // opcional, mas podemos enviar se estiver preenchido
-    });
-    alert("Conta criada com sucesso!");
-    router.push("/auth/login");
-  } catch (error) {
-    console.error(error);
-    alert("Erro ao criar conta");
-  }
-};
-
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await register({ fullName, email, password, tel, birthDate });
+      router.push("/"); // redireciona para Home após registrar
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
@@ -51,7 +42,7 @@ export default function RegisterPage() {
               placeholder="Seu nome completo"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
+              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
               required
             />
           </div>
@@ -66,7 +57,7 @@ export default function RegisterPage() {
               placeholder="exemplo@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
+              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
               required
             />
           </div>
@@ -81,7 +72,7 @@ export default function RegisterPage() {
               placeholder="+244 XXX XXX XXX"
               value={tel}
               onChange={(e) => setTel(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
+              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
               required
             />
           </div>
@@ -95,7 +86,7 @@ export default function RegisterPage() {
               type="date"
               value={birthDate}
               onChange={(e) => setBirthDate(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
+              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
             />
           </div>
 
@@ -109,7 +100,7 @@ export default function RegisterPage() {
               placeholder="Crie uma senha forte"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
+              className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-sky-400 outline-none text-gray-500"
               required
             />
           </div>
@@ -117,14 +108,9 @@ export default function RegisterPage() {
           {/* Botão */}
           <button
             type="submit"
-            disabled={loading}
-            className={`w-full rounded-lg py-2 font-semibold transition ${
-              loading
-                ? "bg-sky-400 cursor-not-allowed"
-                : "bg-gray-600 hover:bg-gray-900 text-white"
-            }`}
+            className="w-full rounded-xl py-2 font-semibold bg-gray-600 hover:bg-gray-900 text-white transition"
           >
-            {loading ? "Criando conta..." : "Criar conta"}
+            Criar Conta
           </button>
         </form>
 
@@ -142,4 +128,3 @@ export default function RegisterPage() {
   );
 }
 
-export const dynamic = "force-dynamic";
